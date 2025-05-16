@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 def scrape_news(category):
     url = f"https://www.tvnet.lv/{category}"
@@ -18,3 +19,9 @@ def scrape_news(category):
                 'category': category
             })
     return articles
+
+def save_to_csv(news_list, filename="news.csv"):
+    with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=['title', 'link', 'category'])
+        writer.writeheader()
+        writer.writerows(news_list)
