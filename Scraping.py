@@ -8,16 +8,22 @@ def scrape_news(category):
     soup = BeautifulSoup(response.text, 'html.parser')
 
     articles = []
-    for item in soup.select('article'):
-        title_tag = item.find('h3') or item.find('h2')
+
+    items = soup.find_all('article')
+    for item in items:
+        title_tag = item.find('h3') or item.find('h2') or item.find('a')
         if title_tag:
             title = title_tag.text.strip()
-            link = item.find('a')['href']
+            link_tag = item.find('a')
+            link = link_tag['href'] if link_tag and 'href' in link_tag.attrs else ''
+            if link.startswith('/'):
+                link = 'https://www.tvnet.lv' + link
             articles.append({
                 'title': title,
                 'link': link,
                 'category': category
             })
+
     return articles
 
 def save_to_csv(news_list, filename="news.csv"):
@@ -25,3 +31,4 @@ def save_to_csv(news_list, filename="news.csv"):
         writer = csv.DictWriter(file, fieldnames=['title', 'link', 'category'])
         writer.writeheader()
         writer.writerows(news_list)
+
