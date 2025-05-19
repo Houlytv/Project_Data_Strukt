@@ -1,5 +1,5 @@
 from Scraping import scrape_news, save_to_csv
-from Web_scraping import load_news_by_category, show_news, show_history, save_history_to_csv, load_history_from_csv
+from user_interface import load_news_by_category, show_news, show_history, save_history_to_csv, load_history_from_csv
 
 def main():
     load_history_from_csv()
